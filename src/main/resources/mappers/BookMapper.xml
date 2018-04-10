@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.fjut.bookshop.dao.BookMapper" >
+  <resultMap id="BaseResultMap" type="edu.fjut.bookshop.domain.Book" >
+    <constructor >
+      <idArg column="bookIsbn" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="bookName" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="author" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="publisher" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pubilshdata" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="stocknum" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="categoryId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="description" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="img" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    bookIsbn, bookName, author, publisher, pubilshdata, price, stocknum, categoryId, 
+    description, img
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.fjut.bookshop.domain.BookExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_book
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_book
+    where bookIsbn = #{bookisbn,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bs_book
+    where bookIsbn = #{bookisbn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="edu.fjut.bookshop.domain.Book" >
+    insert into bs_book (bookIsbn, bookName, author, 
+      publisher, pubilshdata, price, 
+      stocknum, categoryId, description, 
+      img)
+    values (#{bookisbn,jdbcType=VARCHAR}, #{bookname,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{publisher,jdbcType=VARCHAR}, #{pubilshdata,jdbcType=TIMESTAMP}, #{price,jdbcType=DECIMAL}, 
+      #{stocknum,jdbcType=INTEGER}, #{categoryid,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{img,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.fjut.bookshop.domain.Book" >
+    insert into bs_book
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bookisbn != null" >
+        bookIsbn,
+      </if>
+      <if test="bookname != null" >
+        bookName,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="publisher != null" >
+        publisher,
+      </if>
+      <if test="pubilshdata != null" >
+        pubilshdata,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="stocknum != null" >
+        stocknum,
+      </if>
+      <if test="categoryid != null" >
+        categoryId,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bookisbn != null" >
+        #{bookisbn,jdbcType=VARCHAR},
+      </if>
+      <if test="bookname != null" >
+        #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="publisher != null" >
+        #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="pubilshdata != null" >
+        #{pubilshdata,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stocknum != null" >
+        #{stocknum,jdbcType=INTEGER},
+      </if>
+      <if test="categoryid != null" >
+        #{categoryid,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_book
+    <set >
+      <if test="record.bookisbn != null" >
+        bookIsbn = #{record.bookisbn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookname != null" >
+        bookName = #{record.bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null" >
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publisher != null" >
+        publisher = #{record.publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubilshdata != null" >
+        pubilshdata = #{record.pubilshdata,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.stocknum != null" >
+        stocknum = #{record.stocknum,jdbcType=INTEGER},
+      </if>
+      <if test="record.categoryid != null" >
+        categoryId = #{record.categoryid,jdbcType=INTEGER},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.img != null" >
+        img = #{record.img,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_book
+    set bookIsbn = #{record.bookisbn,jdbcType=VARCHAR},
+      bookName = #{record.bookname,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      publisher = #{record.publisher,jdbcType=VARCHAR},
+      pubilshdata = #{record.pubilshdata,jdbcType=TIMESTAMP},
+      price = #{record.price,jdbcType=DECIMAL},
+      stocknum = #{record.stocknum,jdbcType=INTEGER},
+      categoryId = #{record.categoryid,jdbcType=INTEGER},
+      description = #{record.description,jdbcType=VARCHAR},
+      img = #{record.img,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.fjut.bookshop.domain.Book" >
+    update bs_book
+    <set >
+      <if test="bookname != null" >
+        bookName = #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="publisher != null" >
+        publisher = #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="pubilshdata != null" >
+        pubilshdata = #{pubilshdata,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stocknum != null" >
+        stocknum = #{stocknum,jdbcType=INTEGER},
+      </if>
+      <if test="categoryid != null" >
+        categoryId = #{categoryid,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where bookIsbn = #{bookisbn,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.fjut.bookshop.domain.Book" >
+    update bs_book
+    set bookName = #{bookname,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      publisher = #{publisher,jdbcType=VARCHAR},
+      pubilshdata = #{pubilshdata,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=DECIMAL},
+      stocknum = #{stocknum,jdbcType=INTEGER},
+      categoryId = #{categoryid,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR}
+    where bookIsbn = #{bookisbn,jdbcType=VARCHAR}
+  </update>
+
+
+
+  <select id="selectStockNumByBookIsbn" parameterType="map" resultType="integer">
+    SELECT stocknum
+    FROM bs_book
+    WHERE bookIsbn = #{bookisbn,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectCategoryIdByBookIsbn" parameterType="map" resultType="integer">
+    SELECT categoryId
+    FROM bs_book
+    WHERE bookIsbn = #{bookisbn,jdbcType=VARCHAR}
+  </select>
+
+  <select id="checkCategoryId" parameterType="map" resultType="integer">
+    SELECT COUNT(*)
+    FROM bs_book
+    WHERE categoryId=#{categoryid}
+  </select>
+
+  <select id="selectPriceByBookIsbn" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+    SELECT price
+    FROM bs_book
+    WHERE bookIsbn = #{bookisbn,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectPriceByBookName" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+    SELECT price
+    FROM bs_book
+    WHERE bookName = #{bookname,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByBookNameAndCategoryId" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM bs_book
+    <where>
+      <if test="bookName !=null and bookName!=''">
+        AND bookName LIKE #{bookName}
+      </if>
+      <if test="categoryid !=null and categoryid !=''">
+        AND categoryId=#{categoryid}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByAuthorBookNameAndCategoryId" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM bs_book
+    <where>
+      <if test="author!=null and author!=''">
+        AND author LIKE #{author}
+      </if>
+      <if test="bookName!=null and bookName!=''">
+        AND bookName LIKE #{bookName}
+      </if>
+      <if test="categoryid !=null and categoryid !=''">
+        AND categoryId=#{categoryid}
+      </if>
+      AND stocknum&gt;0
+    </where>
+  </select>
+
+  <select id="selectBookNameByBookIsbn" parameterType="map" resultType="string">
+    SELECT bookName
+    FROM bs_book
+    where bookIsbn = #{bookisbn,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateStockNumDecByBookIsbn" parameterType="map">
+    update bs_book
+    SET stocknum=stocknum-1
+    WHERE bookIsbn = #{bookisbn}
+  </update>
+
+  <update id="updateStockNumINCByBookIsbn" parameterType="map">
+    update bs_book
+    SET stocknum=stocknum+1
+    WHERE bookIsbn = #{bookisbn}
+  </update>
+</mapper>

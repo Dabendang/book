@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.fjut.bookshop.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="edu.fjut.bookshop.domain.User" >
+    <constructor >
+      <idArg column="userId" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="logPassword" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="payPassword" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="userName" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sex" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="livePlace" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="balance" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="status" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    userId, logPassword, payPassword, userName, sex, livePlace, create_time, update_time,
+    balance, status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.fjut.bookshop.domain.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_user
+    where userId = #{userid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bs_user
+    where userId = #{userid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="edu.fjut.bookshop.domain.User" >
+    insert into bs_user (userId, logPassword, payPassword,
+      userName, sex, livePlace, 
+      create_time, update_time, balance, 
+      status)
+    values (#{userid,jdbcType=VARCHAR}, #{logpassword,jdbcType=VARCHAR}, #{paypassword,jdbcType=VARCHAR},
+      #{username,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{liveplace,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{balance,jdbcType=DECIMAL}, 
+      #{status,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.fjut.bookshop.domain.User" >
+    insert into bs_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="logpassword != null" >
+        logPassword,
+      </if>
+      <if test="paypassword != null" >
+        payPassword,
+      </if>
+      <if test="username != null" >
+        userName,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="liveplace != null" >
+        livePlace,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="logpassword != null" >
+        #{logpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="paypassword != null" >
+        #{paypassword,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="liveplace != null" >
+        #{liveplace,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_user
+    <set >
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logpassword != null" >
+        logPassword = #{record.logpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paypassword != null" >
+        payPassword = #{record.paypassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        userName = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.liveplace != null" >
+        livePlace = #{record.liveplace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_user
+    set userId = #{record.userid,jdbcType=VARCHAR},
+      logPassword = #{record.logpassword,jdbcType=VARCHAR},
+      payPassword = #{record.paypassword,jdbcType=VARCHAR},
+      userName = #{record.username,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      livePlace = #{record.liveplace,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      balance = #{record.balance,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.fjut.bookshop.domain.User" >
+    update bs_user
+    <set >
+      <if test="logpassword != null" >
+        logPassword = #{logpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="paypassword != null" >
+        payPassword = #{paypassword,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="liveplace != null" >
+        livePlace = #{liveplace,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.fjut.bookshop.domain.User" >
+    update bs_user
+    set logPassword = #{logpassword,jdbcType=VARCHAR},
+      payPassword = #{paypassword,jdbcType=VARCHAR},
+      userName = #{username,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      livePlace = #{liveplace,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      balance = #{balance,jdbcType=DECIMAL},
+      status = #{status,jdbcType=CHAR}
+    where userId = #{userid,jdbcType=VARCHAR}
+  </update>
+
+
+
+
+
+
+
+  <select id="checkUsername" parameterType="map" resultType="integer">
+    SELECT COUNT(*)
+    FROM bs_user
+    WHERE userName=#{username}
+  </select>
+
+  <select id="selectLogPasswordByUserId" parameterType="map" resultType="string">
+    SELECT logPassword
+    FROM bs_user
+    WHERE userId=#{userid}
+  </select>
+
+  <select id="selectPayPasswordByUserId" parameterType="map" resultType="string">
+    SELECT PayPassword
+    FROM bs_user
+    WHERE userId=#{userid}
+  </select>
+
+  <select id="selectLogPasswordByUserName" parameterType="map" resultType="string">
+    SELECT logPassword
+    FROM bs_user
+    WHERE userName=#{username}
+  </select>
+
+  <select id="selectPayPasswordByUserName" parameterType="map" resultType="string">
+    SELECT PayPassword
+    FROM bs_user
+    WHERE userName=#{username}
+  </select>
+
+  <select id="selectUserIdByUserName" parameterType="map" resultType="string">
+    SELECT userId
+    FROM bs_user
+    WHERE userName=#{username}
+  </select>
+
+  <select id="selectStatusByUserNameAndLOGPwd" parameterType="map" resultType="string">
+    SELECT status
+    FROM bs_user
+    WHERE userName=#{username}
+    AND logPassword=#{logPassword}
+  </select>
+
+
+  <select id="selectByUserNameAndLOGPwd" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    FROM bs_user
+    WHERE userName=#{username}
+    AND logPassword=#{logPassword}
+  </select>
+
+  <select id="selectBalanceByUserId" parameterType="map" resultType="java.math.BigDecimal">
+    select balance
+    FROM bs_user
+    WHERE userId=#{userid}
+  </select>
+
+  <select id="selectUserNameByUserId" parameterType="map" resultType="string">
+    SELECT userName
+    FROM bs_user
+    WHERE userId=#{userid}
+  </select>
+
+
+  <select id="selectLikeUserNameAndStatus" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM bs_user
+    <where>
+      <if test="username !=null and username!=''">
+        AND userName LIKE #{username}
+      </if>
+      <if test="status !=null and status!=''">
+        AND status=#{status}
+      </if>
+    </where>
+  </select>
+
+  <select id="checkStatusByUserId" parameterType="map" resultType="string">
+    SELECT status
+    FROM bs_user
+    WHERE userId=#{userid}
+  </select>
+
+
+  <update id="updateBalanceByUseridADD" parameterType="map" >
+    UPDATE bs_user
+    SET balance=balance+ #{money}
+    where userId=#{userid}
+  </update>
+
+
+  <update id="updateBalanceByUseridDEL" parameterType="map" >
+    UPDATE bs_user
+    SET balance=balance- #{money}
+    where userId=#{userid}
+  </update>
+
+  <update id="updateBalanceByuserIdAndNewBalance" parameterType="map" >
+    UPDATE bs_user
+    SET balance=#{newBalance}
+    where userId=#{userid}
+  </update>
+
+
+
+  <update id="updateStatusByUserId" parameterType="map">
+  UPDATE bs_user
+  SET  status=#{status}
+  WHERE userId=#{userid}
+  </update>
+
+</mapper>

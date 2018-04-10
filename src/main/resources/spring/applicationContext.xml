@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+		>
+
+	<description>Spring的配置文件</description>
+
+	<context:component-scan base-package="edu.fjut.bookshop" annotation-config="true">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<!--=================== 数据源，事务控制，xxx ================-->
+	<context:property-placeholder location="classpath:db.properties" />
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" init-method="init">
+		<property name="Url" value="${db.url}"/>
+		<property name="driverClassName" value="${db.driverClassName}"/>
+		<property name="username" value="${db.username}"/>
+		<property name="password" value="${db.password}"/>
+		<!-- 连接池启动时的初始值 -->
+		<property name="initialSize" value="${db.initialSize}"/>
+		<!-- 连接池的最大值 -->
+		<property name="maxActive" value="${db.maxActive}"/>
+		<!-- 最小空闲值.当空闲的连接数少于阀值时，连接池就会预申请去一些连接，以免洪峰来时来不及申请 -->
+		<property name="minIdle" value="${db.minIdle}"/>
+		<!-- 最大建立连接等待时间。如果超过此时间将接到异常。设为－1表示无限制 -->
+		<property name="maxWait" value="${db.maxWait}"/>
+		<!--#给出一条简单的sql语句进行验证 -->
+		<!--<property name="validationQuery" value="select getdate()" />-->
+		<property name="defaultAutoCommit" value="${db.defaultAutoCommit}"/>
+		<!-- 回收被遗弃的（一般是忘了释放的）数据库连接到连接池中 -->
+		<!--<property name="removeAbandoned" value="true" />-->
+		<!-- 数据库连接过多长时间不用将被视为被遗弃而收回连接池中 -->
+		<!--<property name="removeAbandonedTimeout" value="120" />-->
+		<!-- #连接的超时时间，默认为半小时。 -->
+		<property name="minEvictableIdleTimeMillis" value="${db.minEvictableIdleTimeMillis}"/>
+
+		<!--# 失效检查线程运行时间间隔，要小于MySQL默认-->
+		<property name="timeBetweenEvictionRunsMillis" value="40000"/>
+		<!--# 检查连接是否有效-->
+		<property name="testWhileIdle" value="true"/>
+		<!--# 检查连接有效性的SQL语句-->
+		<property name="validationQuery" value="SELECT 1 FROM dual"/>
+	</bean>
+
+	<!--================== 配置和MyBatis的整合=============== -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 指定mybatis全局配置文件的位置 -->
+		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml"/>
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 指定mybatis，mapper文件的位置 -->
+		<property name="mapperLocations" value="classpath:mappers/*Mapper.xml"/>
+	</bean>
+
+	<!-- 配置扫描器，将mybatis接口的实现加入到ioc容器中 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!--扫描所有dao接口的实现，加入到ioc容器中 -->
+		<property name="basePackage" value="edu.fjut.bookshop.dao"/>
+	</bean>
+	
+	<!-- 配置一个可以执行批量的sqlSession -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+		<!--<constructor-arg name="executorType" value="BATCH"></constructor-arg>-->
+	</bean>
+	<!--=============================================  -->
+
+	<!-- ===============事务控制的配置 ================-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!--控制住数据源  -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+
+	<!--配置事务增强，事务如何切入  -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!--以查询关键字开始的所有方法为只读方法  -->
+			<tx:method name="get*" read-only="true" propagation="SUPPORTS"/>
+			<tx:method name="select*" read-only="true" propagation="SUPPORTS"/>
+			<tx:method name="query*" read-only="true" propagation="SUPPORTS"/>
+			<tx:method name="find*" read-only="true" propagation="SUPPORTS"/>
+			<!-- 所有方法都是事务方法 -->
+			<tx:method name="*" propagation="REQUIRED" rollback-for="java.lang.RuntimeException"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<!-- 切入点表达式 -->
+		<aop:pointcut expression="execution(* edu.fjut.bookshop.service..*.*(..))" id="txPoint"/>
+		<!-- 配置事务增强 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>
+	</aop:config>
+
+	
+</beans>

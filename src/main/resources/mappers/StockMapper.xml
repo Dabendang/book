@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.fjut.bookshop.dao.StockMapper" >
+  <resultMap id="BaseResultMap" type="edu.fjut.bookshop.domain.Stock" >
+    <constructor >
+      <idArg column="stockId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="stockNum" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="totalCategory" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    stockId, stockNum, totalCategory
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.fjut.bookshop.domain.StockExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_stock
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_stock
+    where stockId = #{stockid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_stock
+    where stockId = #{stockid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.fjut.bookshop.domain.Stock" >
+    insert into bs_stock (stockId, stockNum, totalCategory
+      )
+    values (#{stockid,jdbcType=INTEGER}, #{stocknum,jdbcType=BIGINT}, #{totalcategory,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.fjut.bookshop.domain.Stock" >
+    insert into bs_stock
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stockid != null" >
+        stockId,
+      </if>
+      <if test="stocknum != null" >
+        stockNum,
+      </if>
+      <if test="totalcategory != null" >
+        totalCategory,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stockid != null" >
+        #{stockid,jdbcType=INTEGER},
+      </if>
+      <if test="stocknum != null" >
+        #{stocknum,jdbcType=BIGINT},
+      </if>
+      <if test="totalcategory != null" >
+        #{totalcategory,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_stock
+    <set >
+      <if test="record.stockid != null" >
+        stockId = #{record.stockid,jdbcType=INTEGER},
+      </if>
+      <if test="record.stocknum != null" >
+        stockNum = #{record.stocknum,jdbcType=BIGINT},
+      </if>
+      <if test="record.totalcategory != null" >
+        totalCategory = #{record.totalcategory,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_stock
+    set stockId = #{record.stockid,jdbcType=INTEGER},
+      stockNum = #{record.stocknum,jdbcType=BIGINT},
+      totalCategory = #{record.totalcategory,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.fjut.bookshop.domain.Stock" >
+    update bs_stock
+    <set >
+      <if test="stocknum != null" >
+        stockNum = #{stocknum,jdbcType=BIGINT},
+      </if>
+      <if test="totalcategory != null" >
+        totalCategory = #{totalcategory,jdbcType=INTEGER},
+      </if>
+    </set>
+    where stockId = #{stockid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.fjut.bookshop.domain.Stock" >
+    update bs_stock
+    set stockNum = #{stocknum,jdbcType=BIGINT},
+      totalCategory = #{totalcategory,jdbcType=INTEGER}
+    where stockId = #{stockid,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateStockNumDec" parameterType="map" >
+    UPDATE bs_stock
+    SET stockNum=stockNum-1
+  </update>
+
+  <update id="updateStockNumINC" parameterType="map">
+    UPDATE bs_stock
+    SET stockNum=stockNum+1
+  </update>
+
+
+  <update id="updateTotalCategoryINC" parameterType="map" >
+    UPDATE bs_stock
+    SET totalCategory=totalCategory+1
+  </update>
+
+  <update id="updateTotalCategoryDec" parameterType="map" >
+    UPDATE bs_stock
+    SET totalCategory=totalCategory-1
+  </update>
+
+</mapper>

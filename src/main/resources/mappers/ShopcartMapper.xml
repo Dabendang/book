@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.fjut.bookshop.dao.ShopcartMapper" >
+  <resultMap id="BaseResultMap" type="edu.fjut.bookshop.domain.Shopcart" >
+    <constructor >
+      <idArg column="scid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="bookName" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="bookNum" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="bookPrice" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="totalPrice" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    scid, username, bookName, bookNum, bookPrice, totalPrice
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.fjut.bookshop.domain.ShopcartExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_shopcart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_shopcart
+    where scid = #{scid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_shopcart
+    where scid = #{scid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.fjut.bookshop.domain.Shopcart" >
+    insert into bs_shopcart (scid, username, bookName, 
+      bookNum, bookPrice, totalPrice
+      )
+    values (#{scid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{bookname,jdbcType=VARCHAR}, 
+      #{booknum,jdbcType=INTEGER}, #{bookprice,jdbcType=DECIMAL}, #{totalprice,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.fjut.bookshop.domain.Shopcart" >
+    insert into bs_shopcart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="scid != null" >
+        scid,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="bookname != null" >
+        bookName,
+      </if>
+      <if test="booknum != null" >
+        bookNum,
+      </if>
+      <if test="bookprice != null" >
+        bookPrice,
+      </if>
+      <if test="totalprice != null" >
+        totalPrice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="scid != null" >
+        #{scid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="bookname != null" >
+        #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="booknum != null" >
+        #{booknum,jdbcType=INTEGER},
+      </if>
+      <if test="bookprice != null" >
+        #{bookprice,jdbcType=DECIMAL},
+      </if>
+      <if test="totalprice != null" >
+        #{totalprice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_shopcart
+    <set >
+      <if test="record.scid != null" >
+        scid = #{record.scid,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookname != null" >
+        bookName = #{record.bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.booknum != null" >
+        bookNum = #{record.booknum,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookprice != null" >
+        bookPrice = #{record.bookprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalprice != null" >
+        totalPrice = #{record.totalprice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_shopcart
+    set scid = #{record.scid,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      bookName = #{record.bookname,jdbcType=VARCHAR},
+      bookNum = #{record.booknum,jdbcType=INTEGER},
+      bookPrice = #{record.bookprice,jdbcType=DECIMAL},
+      totalPrice = #{record.totalprice,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.fjut.bookshop.domain.Shopcart" >
+    update bs_shopcart
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="bookname != null" >
+        bookName = #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="booknum != null" >
+        bookNum = #{booknum,jdbcType=INTEGER},
+      </if>
+      <if test="bookprice != null" >
+        bookPrice = #{bookprice,jdbcType=DECIMAL},
+      </if>
+      <if test="totalprice != null" >
+        totalPrice = #{totalprice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where scid = #{scid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.fjut.bookshop.domain.Shopcart" >
+    update bs_shopcart
+    set username = #{username,jdbcType=VARCHAR},
+      bookName = #{bookname,jdbcType=VARCHAR},
+      bookNum = #{booknum,jdbcType=INTEGER},
+      bookPrice = #{bookprice,jdbcType=DECIMAL},
+      totalPrice = #{totalprice,jdbcType=DECIMAL}
+    where scid = #{scid,jdbcType=INTEGER}
+  </update>
+
+
+
+
+  <select id="selectEqualsToUsername" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM bs_shopcart
+    <where>
+      AND username=#{username}
+    </where>
+  </select>
+
+
+  <select id="selectByBooknameAndUsename" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    FROM bs_shopcart
+    WHERE username=#{username}
+    AND bookName=#{bookname}
+  </select>
+
+
+  <select id="checkByBooknameAndUsename" parameterType="map" resultType="integer">
+    SELECT count(*)
+    FROM bs_shopcart
+    WHERE username=#{username}
+    AND bookName=#{bookname}
+  </select>
+
+</mapper>
