@@ -67,7 +67,6 @@
                     if(result.code==0){
 
                         alert(result.msg);
-
                         window.location.href="${ctx}/backend/admin/getAllUserInfo";
                     }
                     if(result.code==1){
@@ -76,6 +75,7 @@
                         window.location.href="${ctx}/backend/admin/getAllUserInfo";
                     }
                     if(result.code==3){
+
                         alert(result.msg);
                         window.location.href="${ctx}/backend/admin/getAllUserInfo";
                     }
@@ -118,12 +118,16 @@
                         <a  class="btn btn-primary" href="${ctx}/portal/shopcart/deleteShopcartInfo?scid=${shopcart.scid}">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span>删 除</span>
                         </a>
-                        <a  class="btn btn-primary" onclick="toSbmitOrder(${shopcart.scid},$('#InputPrice').val())">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span>结 算</span>
-                        </a>
                     </td>
                 </tr>
             </c:forEach>
+            <div class="row">
+                <div class="col-md-offset-8">
+                    <a  class="btn btn-primary" onclick="toSbmitOrder(${shopcart.scid},$('#InputPrice').val())">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span>结 算</span>
+                    </a>
+                </div>
+            </div>
             </tbody>
         </table>
     </div>
