@@ -9,10 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="${ctx}/js/jquery.min.js"></script>
-    <link href="${ctx}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${ctx}/css/bootstrap3/bootstrap.min.css" rel="stylesheet">
     <link href="${ctx}/css/bootstrap-responsive.min.css" rel="stylesheet">
     <script src="${ctx}/js/jquery.toastmessage.js" type="text/javascript"></script>
-    <script src="${ctx}/js/bootstrap.min.js"></script>
+    <script src="${ctx}/js/bootstrap3/bootstrap.min.js"></script>
     <style type="text/css">
         body {
             margin: 0px;
@@ -54,10 +54,10 @@
         .pagination{font-size:20px;	list-style-type:none;}
     </style>
     <script>
-        function toSbmitOrder(scid,booknum) {
+        function toSbmitOrder(scid,booknum,flag) {
 
             $.ajax({
-                url:"${ctx}/portal/shopcart/toSettle",
+                url:"${ctx}/portal/shopcart/"+flag,
                 data:{
                     "scid":scid,
                     "booknum":booknum,
@@ -110,24 +110,17 @@
                     <td>${shopcart.bookname}</td>
                     <td>
                         <div class="input-group" >
-                            <input type="number" min="1" step="1" max="9999999" required  value="${shopcart.booknum}"  class="form-control" id="InputPrice" placeholder="金钱数额" name="booknum">
+                            <input type="number" min="1" step="1" max="9999999" required  value="${shopcart.booknum}"  class="form-control" id="InputPrice" placeholder="金钱数额" name="booknum" onchange="toSbmitOrder(${shopcart.scid},$('#InputPrice').val()),'changeBookNum'">
                         </div>
                     </td>
                     <td>${shopcart.bookprice}</td>
                     <td>
-                        <a  class="btn btn-primary" href="${ctx}/portal/shopcart/deleteShopcartInfo?scid=${shopcart.scid}">
+                        <a  class="btn btn-info" href="${ctx}/portal/shopcart/deleteShopcartInfo?scid=${shopcart.scid}">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span>删 除</span>
                         </a>
                     </td>
                 </tr>
             </c:forEach>
-            <div class="row">
-                <div class="col-md-offset-8">
-                    <a  class="btn btn-primary" onclick="toSbmitOrder(${shopcart.scid},$('#InputPrice').val())">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span>结 算</span>
-                    </a>
-                </div>
-            </div>
             </tbody>
         </table>
     </div>
@@ -168,6 +161,13 @@
                     </li>
                 </ul>
             </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-8">
+            <a  class="btn btn-primary" onclick="toSbmitOrder(${shopcart.username},$('#InputPrice').val())">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span>结 算</span>
+            </a>
         </div>
     </div>
 </div>

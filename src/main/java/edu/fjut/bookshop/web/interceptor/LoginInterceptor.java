@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-      /*  Admin admin = (Admin) request.getSession().getAttribute(BookShopConst.CURRENT_ADMIN);
+        Admin admin = (Admin) request.getSession().getAttribute(BookShopConst.CURRENT_ADMIN);
          User user= (User) request.getSession().getAttribute(BookShopConst.CURRENT_USER);
         String uri = request.getRequestURI();
-        if(admin==null && user==null && !"/".equals(uri) && !"/admin".equals(uri) && !"/portal/user/login".equals(uri) && ! "/portal/user/register".equals(uri) && !"/backend/admin/login".equals(uri)){
+        if(admin==null && user==null){
             String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
             if(uri.indexOf("portal")>0){
                 response.sendRedirect(basePath+"/");
@@ -29,7 +29,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             }
 
             return false;
-        }*/
+        }
         return true;
     }
 

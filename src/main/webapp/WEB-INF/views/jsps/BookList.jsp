@@ -9,9 +9,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script src="${ctx}/js/jquery.min.js"></script>
-	<link href="${ctx}/css/bootstrap.min.css" rel="stylesheet">
+	<link href="${ctx}/css/bootstrap3/bootstrap.min.css" rel="stylesheet">
 	<link href="${ctx}/css/bootstrap-responsive.min.css" rel="stylesheet">
-	<script src="${ctx}/js/bootstrap.min.js"></script>
+	<script src="${ctx}/js/bootstrap3/bootstrap.min.js"></script>
 <style type="text/css">
 	body {
 		margin: 0px;
@@ -98,6 +98,7 @@
 			</div>
 				<thead>
 				<tr class="info">
+					<th>图书图片</th>
 					<th>图书编号</th>
 					<th>图书名</th>
 					<th>作者</th>
@@ -113,6 +114,7 @@
 				<tbody>
 				<c:forEach items="${requestScope.pageInfo.list}" var="book">
 					<tr>
+						<td><img src="${book.img}"></td>
 						<td>${book.bookisbn}</td>
 						<td>${book.bookname}</td>
 						<td>${book.author}</td>

@@ -76,8 +76,8 @@
 			<h2 style="margin-left:30%; color:#081148">管理员登录</h2>
 
 			<form  id="login_form" action="${ctx}/backend/admin/login" method="post" >
-				<input type="text" name="username" class="name" autofocus="autofocus" placeholder="用户名" required oninvalid="setCustomValidity('请 输 入 用 户 名！');" oninput="setCustomValidity('');"  >
-				<input type="password" name="password" class="password" placeholder="密码" required oninvalid="setCustomValidity('请 输 入 密 码！');" oninput="setCustomValidity('');">
+				<input type="text" name="username" class="name" value="lql" autofocus="autofocus" placeholder="用户名" required oninvalid="setCustomValidity('请 输 入 用 户 名！');" oninput="setCustomValidity('');"  >
+				<input type="password" name="password" class="password" value="123456" placeholder="密码" required oninvalid="setCustomValidity('请 输 入 密 码！');" oninput="setCustomValidity('');">
 				<ul>
 					<li>
 						<input type="checkbox" id="brand1" value="Y">

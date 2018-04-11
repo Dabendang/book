@@ -1,5 +1,6 @@
 package edu.fjut.bookshop.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ public class Book {
 
     private String publisher;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)//yyyy-MM-dd
     private Date pubilshdata;
 
     private BigDecimal price;
