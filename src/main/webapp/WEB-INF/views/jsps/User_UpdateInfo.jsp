@@ -8,11 +8,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="${ctx}/js/jquery.min.js"></script>
-<link href="${ctx}/css/bootstrap3/bootstrap.min.css" rel="stylesheet">
+<link href="${ctx}/css/bootstrap.min.css" rel="stylesheet">
 <link href="${ctx}/css/bootstrap-responsive.min.css" rel="stylesheet">
-<link href="${ctx}/css/bootstrap3/bootstrap-theme.min.css" rel="stylesheet"
+<link href="${ctx}/css/bootstrap-theme.min.css" rel="stylesheet"
 	type="text/css">
-<script src="${ctx}/js/bootstrap3/bootstrap.min.js" type="text/javascript"></script>
+<script src="${ctx}/js/bootstrap.min.js" type="text/javascript"></script>
 <style type="text/css">
 body {
 	background: url(${ctx}images/8.jpg) repeat top left;

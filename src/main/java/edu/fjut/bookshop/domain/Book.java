@@ -15,7 +15,7 @@ public class Book {
 
     private String publisher;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)//yyyy-MM-dd
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date pubilshdata;
 
     private BigDecimal price;

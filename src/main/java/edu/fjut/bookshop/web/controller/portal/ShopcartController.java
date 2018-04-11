@@ -51,22 +51,10 @@ public class ShopcartController {
     }
 
     //回显
-    @GetMapping(value = "changeBookNum")
-    public String toSettle(HttpSession session, @RequestParam(value = "scid")Integer scid, @RequestParam(value = "booknum") Integer booknum){
+    @GetMapping(value = "toSettle")
+    public String toSettle(Map<String,Object> map,HttpSession session, @RequestParam(value = "scid")Integer scid, @RequestParam(value = "booknum",defaultValue ="1") Integer booknum){
 
         Shopcart shopcart=shopcartService.getShopcartByScid(scid);
-        if(booknum != shopcart.getBooknum())
-            shopcart=shopcartService.getNewShopcartByBooknum(shopcart,booknum);
-        map.put("Shopcart",shopcart);
-        return "User_UpdateInfo";
-    }
-
-    //回显
-    @GetMapping(value = "toSettle")
-    public String toSettle(Map<String,Object> map,HttpSession session, @RequestParam(value = "pageNum",defaultValue = "0")Integer pageNum, @RequestParam(value = "pageSize",defaultValue ="5") Integer pageSize){
-
-        User user = (User)session.getAttribute(BookShopConst.CURRENT_USER);
-        PageInfo pageInfo=userService.(pageNum,pageSize,user.getUserid());
         if(booknum != shopcart.getBooknum())
             shopcart=shopcartService.getNewShopcartByBooknum(shopcart,booknum);
         map.put("Shopcart",shopcart);

@@ -6,7 +6,7 @@ import edu.fjut.bookshop.domain.Book;
 import edu.fjut.bookshop.domain.CateGory;
 import edu.fjut.bookshop.service.BookService;
 import edu.fjut.bookshop.service.CategoryService;
-import lombok.extern.slf4j.Slf4j;
+import edu.fjut.bookshop.service.IFileService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
 
@@ -22,7 +23,6 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/admin/book/")
-@Slf4j
 public class BookController {
 
     @Autowired
@@ -30,6 +30,9 @@ public class BookController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private IFileService fileService;
 
 
     @GetMapping(value = "books")
@@ -67,42 +70,19 @@ public class BookController {
     }
 
 
+
+
     //更新或修改方法
     @PostMapping(value = "book")
     @ResponseBody
     public ServerResponse saveOrUpdate(HttpServletRequest request, Book book)throws Exception{
-        //保存数据库的路径
-        String sqlPath = null;
-        //定义文件保存的本地路径
-        String localPath=null;
-        //定义 文件名
-        String filename=null;
+
+        String sqlPath=null;
 
         if(!book.getFile().isEmpty()){
-            //生成uuid作为文件名称
-            String uuid = UUID.randomUUID().toString().replaceAll("-","");
-            //获得文件类型（可以判断如果不是图片，禁止上传）
-            String contentType=book.getFile().getContentType();
-            //获得文件后缀名
-            String suffixName=contentType.substring(contentType.indexOf("/")+1);
-
-            //得到 文件名
-            filename=uuid+"."+suffixName;
-
-            //文件上传路径
-            localPath="E:\\IDEwork\\bookShopOnline\\src\\main\\webapp\\upload\\images\\";
-
-            //文件保存路径
-            sqlPath=localPath+filename;
-
-            book.getFile().transferTo(new File(sqlPath));
-
-            log.info("filename:"+filename);
-            log.info("sqlPath:"+sqlPath);
-            log.info(uuid+contentType+localPath);
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            sqlPath = fileService.upload(book.getFile(), path);
         }
-        //把图片的相对路径保存至数据库
-
         book.setImg(sqlPath);
         if(StringUtils.isNotEmpty(book.getBookisbn())){
             return bookService.update(book);
